@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
 const search = document.querySelector("#search");
 const submit = document.querySelector("#click");
 
-const weatherDataArray = [];
+let weatherDataArray = [];
 
 async function weatherapi(location){
    const response =  await fetch(`https://api.weatherapi.com/v1/forecast.json?key=8d770b35a81b467ba59144257240403&q=${location}&days=3&aqi=yes&alerts=yes`, {mode: 'cors'})
@@ -14,7 +14,7 @@ async function weatherapi(location){
        
       
        
-        
+      
         const weathersData = {
             country: weatherData.location.country,
             
@@ -72,24 +72,29 @@ async function weatherapi(location){
 }
  const loading = document.querySelector(".loader");
  const country = document.querySelector(".country");
+ const divBox = document.querySelector(".data-box");
 submit.addEventListener("click", async () => {
+    
 
-    loading.style.display = "block";
+    loading.style.display = (loading.style.display==="none") ? "block" : "none";
+    if(divBox.style.display==="flex"){
+        divBox.style.display = "none";
+    }
     try{
+        
     const data = await forResponse();
     country.textContent = `Country Name: ${weatherDataArray[0].country}`;
     day();
     firstday();
     secondDay();
     thirdDay();
-    console.log(weatherDataArray);
+    
 }
-    catch {
-        console.error(error);
-    }
+    
 
     finally {
         loading.style.display = "none";
+        divBox.style.display = "flex";
     }
 
 })
@@ -108,11 +113,21 @@ function weatherdataBox() {
 
 function firstday(){
     const container = document.querySelector(".container");
-    
+    let style = "";
     const firstDay = document.querySelector(".first-day");
-    const style = firstDay.style.display=== "none" ? "block" : "none";
+    // if (firstDay.style.display === "" || firstDay.style.display === "none") {
+    //     style = "block"
+    // }
+    // else {
+    //     style = "none"
+    // }
 
-    firstDay.style.display = style;
+     
+    // if(weatherDataArray) {
+    //     style = "block";
+    // }
+
+    // firstDay.style.display = style;
     const dayName = day("day1");
     
     firstDay.innerHTML = `<h2>${dayName}</h2><hr><img src="${weatherDataArray[0][0].img}" alt="" srcset=""> <p> Condition: ${weatherDataArray[0][0].condition}</p><p> Temperautre: ${weatherDataArray[0][0].temp_c}&deg;C</p> <p> Humidity: ${weatherDataArray[0][0].humidity}g.m<sup>-3</sup></p> <p> Air Speed: ${weatherDataArray[0][0].airSpeed}m/s</p> `;
@@ -122,9 +137,22 @@ function secondDay(){
    
     
     const firstDay = document.querySelector(".second-day");
-    const style = firstDay.style.display=== "none" ? "block" : "none";
+    // let style = "";
+  
+    // if (firstDay.style.display === "" || firstDay.style.display === "none") {
+    //     style = "block"
+    // }
+    // else {
+    //     style = "none"
+    // }
 
-    firstDay.style.display = style;
+
+    // // if(weatherDataArray) {
+    // //     style = "block";
+    // // }
+    
+
+    // firstDay.style.display = style;
     const dayName = day("day2");
     
     firstDay.innerHTML = `<h2>${dayName}</h2><hr><img src="${weatherDataArray[0][1].img}" alt="" srcset=""> <p> Condition: ${weatherDataArray[0][1].condition}</p><p> Temperautre: ${weatherDataArray[0][1].temp_c}&deg;C</p> <p> Humidity: ${weatherDataArray[0][1].humidity}g.m<sup>-3</sup></p> <p> Air Speed: ${weatherDataArray[0][1].airSpeed}m/s</p> `;
@@ -132,9 +160,21 @@ function secondDay(){
 
 function thirdDay(){
     const firstDay = document.querySelector(".third-day");
-    const style = firstDay.style.display=== "none" ? "block" : "none";
+    // let style = "";
+ 
+    // if (firstDay.style.display === "" || firstDay.style.display === "none") {
+    //     style = "block"
+    // }
+    // else {
+    //     style = "none"
+    // }
 
-    firstDay.style.display = style;
+     
+    // // if(weatherDataArray) {
+    // //     style = "block";
+    // // }
+
+    // firstDay.style.display = style;
     const dayName = day("day3");
     
     firstDay.innerHTML = `<h2>${dayName}</h2><hr><img src="${weatherDataArray[0][2].img}" alt="" srcset=""> <p> Condition: ${weatherDataArray[0][2].condition}</p><p> Temperautre: ${weatherDataArray[0][2].temp_c}&deg;C</p> <p> Humidity: ${weatherDataArray[0][2].humidity}g.m<sup>-3</sup></p> <p> Air Speed: ${weatherDataArray[0][2].airSpeed}m/s</p> `;
@@ -171,6 +211,7 @@ function day(day){
 
 
  async function forResponse() {
+    weatherDataArray = [];
     const searchValue = search.value;
     const sushen = await weatherapi(searchValue)
     .then(function(response){
@@ -179,6 +220,9 @@ function day(day){
     .then(function(response){
         ;
         weatherDataArray.push(response);
+    })
+    .catch(function(error){
+        console.error(error);
     })
    
     
