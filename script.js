@@ -80,6 +80,11 @@ submit.addEventListener("click", async () => {
     if(divBox.style.display==="flex"){
         divBox.style.display = "none";
     }
+
+
+    if(country.style.display==="block"){
+        country.style.display = "none";
+    }
     try{
         
     const data = await forResponse();
@@ -95,6 +100,7 @@ submit.addEventListener("click", async () => {
     finally {
         loading.style.display = "none";
         divBox.style.display = "flex";
+        country.style.display = "block"
     }
 
 })
